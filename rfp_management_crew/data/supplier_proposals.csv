@@ -1,0 +1,4 @@
+Supplier,Price,Delivery Time (weeks),Contract Terms,Payment Terms,Warranty,SLA (Service Level Agreement)
+Supplier A,1000,2,1-year fixed contract,"50% upfront, 50% on completion",1 year,Guaranteed 99.9% uptime
+Supplier B,950,1,6-month trial period with extension option,Net 30 days,2 years,Guaranteed 99% uptime with penalties
+Supplier C,1100,3,2-year contract with a 1-month exit clause,"30% upfront, 70% on delivery",None,No uptime guarantees

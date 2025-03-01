@@ -1,0 +1,53 @@
+---
+analyze_rfp_responses:
+  description: Automatically extract and highlight key differences in supplier proposals
+    using {RFP_Responses}.
+  expected_output: A detailed comparison report highlighting key differences in supplier
+    proposals based on {RFP_Responses}.
+  async_execution: false
+  agent: rfp_analysis_expert
+risk_analysis:
+  description: Utilize a predictive ML model to analyze risks related to pricing,
+    delivery, and contract terms based on {Historical_Pricing_Data}.
+  expected_output: A risk analysis report detailing potential risks associated with
+    pricing, delivery, and contract terms based on {Historical_Pricing_Data}.
+  async_execution: false
+  agent: rfp_analysis_expert
+  context:
+  - analyze_rfp_responses
+generate_negotiation_charter:
+  description: Create a negotiation charter based on {Commodity_Price_Forecasts} and
+    {Supply_Demand_Data}.
+  expected_output: A comprehensive negotiation charter outlining strategies based
+    on {Commodity_Price_Forecasts} and {Supply_Demand_Data}.
+  async_execution: false
+  agent: negotiation_charter_creator
+generate_supplier_communication:
+  description: Generate and send email/chatbot responses for negotiation using {Negotiation_Terms}.
+  expected_output: Automated email/chatbot responses tailored for supplier negotiations
+    based on {Negotiation_Terms}.
+  async_execution: false
+  agent: supplier_negotiation_specialist
+identify_counteroffers:
+  description: Identify optimal counteroffers and recommend trade-offs based on {Negotiation_Terms}.
+  expected_output: A list of recommended counteroffers and trade-offs for supplier
+    negotiations based on {Negotiation_Terms}.
+  async_execution: false
+  agent: supplier_negotiation_specialist
+  context:
+  - generate_supplier_communication
+draft_contract:
+  description: Prepare a contract template based on negotiated terms and highlight
+    deviations using {Negotiated_Terms}.
+  expected_output: A drafted contract template that includes negotiated terms and
+    highlights any deviations for legal review based on {Negotiated_Terms}.
+  async_execution: false
+  agent: contract_drafting_expert
+legal_review:
+  description: Flag non-compliant clauses for legal approval based on {Drafted_Contract}.
+  expected_output: A report identifying non-compliant clauses in the drafted contract
+    based on {Drafted_Contract}.
+  async_execution: false
+  agent: contract_drafting_expert
+  context:
+  - draft_contract
