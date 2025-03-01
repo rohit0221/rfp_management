@@ -1,86 +1,129 @@
-import pandas as pd
-
-# 1. supplier_proposals.csv
-supplier_proposals = pd.DataFrame({
-    "Supplier": ["Supplier A", "Supplier B", "Supplier C"],
-    "Price per Unit": [100, 95, 102],
-    "Delivery Time": ["30 days", "45 days", "25 days"],
-    "Payment Terms": ["Net 45", "Net 30", "Net 60"],
-    "Additional Notes": [
-        "Includes free shipping",
-        "Discount for bulk orders",
-        "Expedited delivery available"
-    ]
-})
-supplier_proposals.to_csv("supplier_proposals.csv", index=False)
-
-# 2. supplier_proposals.txt
-supplier_proposals_txt = """\
-Supplier A offers a price of $100 per unit with a 30-day delivery time and Net 45 payment terms. Includes free shipping.
-Supplier B offers a price of $95 per unit with a 45-day delivery time and Net 30 payment terms. Provides discounts for bulk orders.
-Supplier C offers a price of $102 per unit with a 25-day delivery time and Net 60 payment terms. Expedited delivery available.
-"""
-with open("supplier_proposals.txt", "w") as f:
-    f.write(supplier_proposals_txt)
-
-# 3. historical_pricing.csv
-historical_pricing = pd.DataFrame({
-    "Year": [2021, 2022, 2023],
-    "Average Price per Unit": [98, 97, 96]
-})
-historical_pricing.to_csv("historical_pricing.csv", index=False)
-
-# 4. price_forecasts.csv
-price_forecasts = pd.DataFrame({
-    "Quarter": ["Q1 2024", "Q2 2024", "Q3 2024", "Q4 2024"],
-    "Forecasted Price per Unit": [97, 98, 99, 100]
-})
-price_forecasts.to_csv("price_forecasts.csv", index=False)
-
-# 5. supply_demand.csv
-supply_demand = pd.DataFrame({
-    "Year": [2023, 2024],
-    "Demand Increase (%)": [5, 10],
-    "Supply Stability": ["Stable", "Slightly Decreasing"]
-})
-supply_demand.to_csv("supply_demand.csv", index=False)
-
-# 6. negotiation_terms.txt
-negotiation_terms_txt = """\
-Preferred payment terms: Net 45.
-Target price: $96 per unit.
-Delivery time should not exceed 30 days.
-Bulk orders should get at least a 5% discount.
-"""
-with open("negotiation_terms.txt", "w") as f:
-    f.write(negotiation_terms_txt)
-
-# 7. negotiated_terms.txt
-negotiated_terms_txt = """\
-Final agreement reached at $96 per unit with 45-day payment terms.
-Supplier B offered the best overall deal with bulk order discounts.
-Delivery time extended to 45 days to accommodate price reduction.
-"""
-with open("negotiated_terms.txt", "w") as f:
-    f.write(negotiated_terms_txt)
-
-# 8. drafted_contract.txt
-drafted_contract_txt = """\
-Contract between Buyer and Supplier B.
-Agreed price: $96 per unit.
-Payment terms: Net 45.
-Delivery: 45 days from order confirmation.
-Bulk discount applied for orders exceeding 1000 units.
-"""
-with open("drafted_contract.txt", "w") as f:
-    f.write(drafted_contract_txt)
-
-# Confirming file creation
-import os
-files_created = [file for file in [
-    "supplier_proposals.csv", "supplier_proposals.txt", "historical_pricing.csv",
-    "price_forecasts.csv", "supply_demand.csv", "negotiation_terms.txt",
-    "negotiated_terms.txt", "drafted_contract.txt"
-] if os.path.exists(file)]
-
-files_created
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31mRunning cells with '.venv (Python 3.12.8)' requires the ipykernel package.\n",
+      "\u001b[1;31mRun the following command to install 'ipykernel' into the Python environment. \n",
+      "\u001b[1;31mCommand: 'd:/git_repos/ibm/rfp_management/rfp_management_crew/.venv/Scripts/python.exe -m pip install ipykernel -U --force-reinstall'"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "\n",
+    "# 1. supplier_proposals.csv\n",
+    "supplier_proposals = pd.DataFrame({\n",
+    "    \"Supplier\": [\"Supplier A\", \"Supplier B\", \"Supplier C\"],\n",
+    "    \"Price per Unit\": [100, 95, 102],\n",
+    "    \"Delivery Time\": [\"30 days\", \"45 days\", \"25 days\"],\n",
+    "    \"Payment Terms\": [\"Net 45\", \"Net 30\", \"Net 60\"],\n",
+    "    \"Additional Notes\": [\n",
+    "        \"Includes free shipping\",\n",
+    "        \"Discount for bulk orders\",\n",
+    "        \"Expedited delivery available\"\n",
+    "    ]\n",
+    "})\n",
+    "supplier_proposals.to_csv(\"supplier_proposals.csv\", index=False)\n",
+    "\n",
+    "# 2. supplier_proposals.txt\n",
+    "supplier_proposals_txt = \"\"\"\\\n",
+    "Supplier A offers a price of $100 per unit with a 30-day delivery time and Net 45 payment terms. Includes free shipping.\n",
+    "Supplier B offers a price of $95 per unit with a 45-day delivery time and Net 30 payment terms. Provides discounts for bulk orders.\n",
+    "Supplier C offers a price of $102 per unit with a 25-day delivery time and Net 60 payment terms. Expedited delivery available.\n",
+    "\"\"\"\n",
+    "with open(\"supplier_proposals.txt\", \"w\") as f:\n",
+    "    f.write(supplier_proposals_txt)\n",
+    "\n",
+    "# 3. historical_pricing.csv\n",
+    "historical_pricing = pd.DataFrame({\n",
+    "    \"Year\": [2021, 2022, 2023],\n",
+    "    \"Average Price per Unit\": [98, 97, 96]\n",
+    "})\n",
+    "historical_pricing.to_csv(\"historical_pricing.csv\", index=False)\n",
+    "\n",
+    "# 4. price_forecasts.csv\n",
+    "price_forecasts = pd.DataFrame({\n",
+    "    \"Quarter\": [\"Q1 2024\", \"Q2 2024\", \"Q3 2024\", \"Q4 2024\"],\n",
+    "    \"Forecasted Price per Unit\": [97, 98, 99, 100]\n",
+    "})\n",
+    "price_forecasts.to_csv(\"price_forecasts.csv\", index=False)\n",
+    "\n",
+    "# 5. supply_demand.csv\n",
+    "supply_demand = pd.DataFrame({\n",
+    "    \"Year\": [2023, 2024],\n",
+    "    \"Demand Increase (%)\": [5, 10],\n",
+    "    \"Supply Stability\": [\"Stable\", \"Slightly Decreasing\"]\n",
+    "})\n",
+    "supply_demand.to_csv(\"supply_demand.csv\", index=False)\n",
+    "\n",
+    "# 6. negotiation_terms.txt\n",
+    "negotiation_terms_txt = \"\"\"\\\n",
+    "Preferred payment terms: Net 45.\n",
+    "Target price: $96 per unit.\n",
+    "Delivery time should not exceed 30 days.\n",
+    "Bulk orders should get at least a 5% discount.\n",
+    "\"\"\"\n",
+    "with open(\"negotiation_terms.txt\", \"w\") as f:\n",
+    "    f.write(negotiation_terms_txt)\n",
+    "\n",
+    "# 7. negotiated_terms.txt\n",
+    "negotiated_terms_txt = \"\"\"\\\n",
+    "Final agreement reached at $96 per unit with 45-day payment terms.\n",
+    "Supplier B offered the best overall deal with bulk order discounts.\n",
+    "Delivery time extended to 45 days to accommodate price reduction.\n",
+    "\"\"\"\n",
+    "with open(\"negotiated_terms.txt\", \"w\") as f:\n",
+    "    f.write(negotiated_terms_txt)\n",
+    "\n",
+    "# 8. drafted_contract.txt\n",
+    "drafted_contract_txt = \"\"\"\\\n",
+    "Contract between Buyer and Supplier B.\n",
+    "Agreed price: $96 per unit.\n",
+    "Payment terms: Net 45.\n",
+    "Delivery: 45 days from order confirmation.\n",
+    "Bulk discount applied for orders exceeding 1000 units.\n",
+    "\"\"\"\n",
+    "with open(\"drafted_contract.txt\", \"w\") as f:\n",
+    "    f.write(drafted_contract_txt)\n",
+    "\n",
+    "# Confirming file creation\n",
+    "import os\n",
+    "files_created = [file for file in [\n",
+    "    \"supplier_proposals.csv\", \"supplier_proposals.txt\", \"historical_pricing.csv\",\n",
+    "    \"price_forecasts.csv\", \"supply_demand.csv\", \"negotiation_terms.txt\",\n",
+    "    \"negotiated_terms.txt\", \"drafted_contract.txt\"\n",
+    "] if os.path.exists(file)]\n",
+    "\n",
+    "files_created\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": ".venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "name": "python",
+   "version": "3.12.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

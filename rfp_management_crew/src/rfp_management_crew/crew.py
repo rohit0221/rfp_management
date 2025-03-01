@@ -7,6 +7,9 @@ from crewai_tools import TXTSearchTool
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
 
+import agentops
+agentops.init()
+
 @CrewBase
 class RfpManagementCrew():
     """RfpManagementCrew crew"""

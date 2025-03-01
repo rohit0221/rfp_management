@@ -1,31 +1,40 @@
-# Report Identifying Non-Compliant Clauses in Drafted Contract
+**CONTRACT AGREEMENT**
 
-## Non-Compliant Clauses
+This Contract Agreement ("Agreement") is made and entered into as of [Date], by and between [Your Company] ("Buyer"), with an address of [Your Address], and [Supplier Name – Supplier B] ("Supplier"), with an address of [Supplier Address].
 
-### 1. Price
-- **Current Clause**: $950 (Supplier B)
-- **Non-Compliance**: Supplier A offers $1000, Supplier C offers $1100. There may be opportunities for negotiation to achieve better pricing.
+**1. Scope of Services**  
+The Supplier agrees to provide [specify services/products] as detailed in the proposal dated [Proposal Date].
 
-### 2. Delivery Time
-- **Current Clause**: 1 week from order confirmation (Supplier B)
-- **Non-Compliance**: Supplier A has a delivery time of 2 weeks, Supplier C has a delivery time of 3 weeks. Supplier B's timing is most favorable.
+**2. Price**  
+The total price for the services/products shall be $950 (the "Price").  
+*Non-Compliance: This price is lower than Supplier A ($1000) but higher than Supplier C ($1100). The competitive context recommends caution.*
 
-### 3. Contract Terms
-- **Current Clause**: 6-month trial period with option to extend based on performance evaluation (Supplier B)
-- **Non-Compliance**: Supplier A has a fixed 1-year contract, Supplier C proposes a 2-year contract with a 1-month exit clause. The flexibility of Supplier B’s terms may pose lower risk.
+**3. Delivery Time**  
+The Supplier agrees to deliver the services/products within 1 week of receiving the Purchase Order (the "Delivery Time").  
+*Non-Compliance: This delivery time is faster than Supplier A's commitment of 2 weeks but quicker delivery does not always guarantee better service.*
 
-### 4. Payment Terms
-- **Current Clause**: Net 30 days (Supplier B)
-- **Non-Compliance**: Supplier A requires a 50% upfront payment, and Supplier C requires 30% upfront and 70% on delivery. Supplier B’s terms are more favorable and mitigate cash flow risks.
+**4. Contract Terms**  
+This Agreement shall commence on the date of signing and shall be in effect for a trial period of 6 months (the "Trial Period"). Following the Trial Period, the Buyer may opt to extend the contract based on satisfactory performance and mutual agreement.  
+*Non-Compliance: The trial period is less binding compared to Supplier A's fixed 1-year term, which may increase the organization’s risk.*
 
-### 5. Warranty
-- **Current Clause**: 2 years (Supplier B)
-- **Non-Compliance**: Supplier A offers a 1-year warranty, Supplier C offers no warranty. The warranty provision from Supplier B is preferable.
+**5. Payment Terms**  
+The Buyer shall make payment within 30 days upon receipt of the invoice from the Supplier (the "Payment Terms").  
+*Non-Compliance: This aligns with Supplier B but differs from Supplier A, which requires 50% upfront payment, potentially creating a cash flow challenge.*
 
-### 6. Service Level Agreement (SLA)
-- **Current Clause**: Guaranteed 99% uptime with penalties (Supplier B)
-- **Non-Compliance**: Supplier A offers a 99.9% uptime guarantee, whereas Supplier C does not provide any uptime guarantees. Supplier A’s SLA may be considered more reliable.
+**6. Warranty**  
+The Supplier warranties that the products/services provided shall be free from defects for a period of 2 years from the date of delivery (the "Warranty").  
+*Non-Compliance: This warranty is superior to Supplier A’s 1-year warranty but should be contrasted with Supplier C's absence of warranty.*
 
-## Note for Legal Review
-Ensure that all deviations are acceptable from a legal standpoint and that the terms align with organizational policies and risk management strategies.
+**7. Service Level Agreement (SLA)**  
+The Supplier guarantees at least 99% uptime for the services provided, with penalties for any failure to meet this uptime commitment as detailed in Exhibit A (the "SLA").  
+*Non-Compliance: This SLA is less stringent than Supplier A's 99.9% uptime guarantee, which offers more security.*
+
+**8. Termination**  
+Either party may terminate this Agreement by providing 30 days written notice to the other party during the Trial Period if the expectations of service are not met. After the Trial Period, the Agreement terminates under the conditions specified above.
+
+**9. Governing Law**  
+This Agreement shall be governed by and construed in accordance with the laws of [State/Country].
+
+**SIGNATURES**  
+IN WITNESS WHEREOF, the parties hereto have executed this Agreement as of the date first above written.
 ```
