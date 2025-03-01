@@ -82,6 +82,7 @@ class RfpManagementCrew():
         return Task(
             config=self.tasks_config['draft_contract'],
             tools=[TXTSearchTool()],
+            output_file="./data/drafted_contract.md"  # Store the drafted contract
         )
 
     @task
@@ -89,6 +90,8 @@ class RfpManagementCrew():
         return Task(
             config=self.tasks_config['legal_review'],
             tools=[TXTSearchTool()],
+            input_file="./data/drafted_contract.txt",  # Read the contract for review
+            output_file="./data/legal_review.md"
         )
 
 
