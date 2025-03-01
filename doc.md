@@ -14,3 +14,6 @@ crewai run
 
 
 crewai run > output.txt 2>&1 & type output.txt
+
+cmd /c "set CREWAI_DEBUG=1 && crewai run > output.txt 2>&1 && type output.txt"
+
