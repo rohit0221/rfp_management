@@ -1,12 +1,10 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from crewai_tools import CSVSearchTool
-from crewai_tools import TXTSearchTool
 
 from rfp_management_crew.tools.pdf_vectorizer import process_and_store_pdfs
 from rfp_management_crew.tools.retrieve_vectors import retrieve_relevant_proposals
 from rfp_management_crew.tools.analyze_pricing_risk import load_historical_pricing, pricing_risk_analysis_tool
-
+from rfp_management_crew.tools.negotiation import generate_forecasted_negotiation_strategy, load_supply_demand_forecast
 @CrewBase
 class RfpManagementCrew():
     """RfpManagementCrew crew"""
@@ -42,6 +40,15 @@ class RfpManagementCrew():
             config=self.agents_config['pricing_risk_analysis_expert'],
             tools=[pricing_risk_analysis_tool],  # ✅ Uses pricing risk tool
         )
+
+    @agent
+    def negotiation_charter_creator(self) -> Agent:
+        """Agent responsible for generating a negotiation charter based on forecasts."""
+        return Agent(
+            config=self.agents_config["negotiation_charter_creator"],  
+            tools=[generate_forecasted_negotiation_strategy],  
+        )
+
 
     # @agent
     # def negotiation_charter_creator(self) -> Agent:
@@ -95,7 +102,7 @@ class RfpManagementCrew():
         """Task for loading historical pricing data from CSV."""
         return Task(
             config=self.tasks_config["load_historical_pricing_task"],
-            function=load_historical_pricing,  # ✅ Ensure this is called
+            function=load_historical_pricing,  
         )
 
     @task
@@ -106,6 +113,27 @@ class RfpManagementCrew():
             inputs={"historical_pricing_data": "{{load_historical_pricing_task}}"},
             tools=[pricing_risk_analysis_tool],  
         )
+    
+    @task
+    def load_forecasted_supply_demand_task(self) -> Task:
+        """Task for loading supply-demand forecasts from CSV."""
+        return Task(
+            config=self.tasks_config["load_forecasted_supply_demand_task"],
+            function=load_supply_demand_forecast,  
+        )
+
+    @task
+    def generate_negotiation_charter(self) -> Task:
+        """Task for generating a negotiation charter using AI-driven market analysis."""
+        return Task(
+            config=self.tasks_config["generate_negotiation_charter"],
+            inputs={
+                "historical_prices": "{{load_historical_pricing_task}}",  # ✅ Uses preloaded historical data
+                "supply_demand": "{{load_forecasted_supply_demand_task}}",  # ✅ Uses preloaded supply-demand data
+            },
+            tools=[generate_forecasted_negotiation_strategy],  # ✅ Uses the fixed tool
+        )
+    
 
     # @task
     # def analyze_rfp_responses(self) -> Task:
@@ -208,6 +236,20 @@ class RfpManagementCrew():
             tasks=[
                 self.load_historical_pricing_task(),
                 self.analyze_pricing_risk(),
+            ],
+            process=Process.sequential,
+            verbose=True,
+        )
+    
+    @crew
+    def negotiation_charter_crew(self) -> Crew:
+        """Crew responsible for generating a negotiation charter based on AI-driven forecasts."""
+        return Crew(
+            agents=[self.negotiation_charter_creator()],  
+            tasks=[
+                self.load_historical_pricing_task(),  
+                self.load_forecasted_supply_demand_task(),  
+                self.generate_negotiation_charter(),  
             ],
             process=Process.sequential,
             verbose=True,
