@@ -31,13 +31,22 @@ retrieve_proposals:
     - process_proposals
 
 
-# analyze_rfp_responses:
-#   description: Automatically extract and highlight key differences in supplier proposals
-#     using {RFP_Responses}.
-#   expected_output: A detailed comparison report highlighting key differences in supplier
-#     proposals based on {RFP_Responses}.
-#   async_execution: false
-#   agent: rfp_analysis_expert
+analyze_rfp_responses:
+  description: >
+    Compare and analyze supplier proposals to extract key differences, risks, and opportunities.
+    Focus on discrepancies in Pricing, Contract Terms, Compliance, Support SLAs, and Implementation Timelines.
+  expected_output: >
+    A detailed comparative report highlighting:
+    - **Key Differences** between supplier proposals.
+    - **Risks & Concerns** in pricing, contract terms, compliance, and support.
+    - **Opportunities** for negotiation and optimization.
+    - **Overall Recommendations** for supplier selection.
+  async_execution: false
+  agent: rfp_analysis_expert
+  context:
+    - retrieve_proposals  # ✅ This ensures analyze_rfp_responses receives retrieval output
+
+
 # risk_analysis:
 #   description: Utilize a predictive ML model to analyze risks related to pricing,
 #     delivery, and contract terms based on {Historical_Pricing_Data}.

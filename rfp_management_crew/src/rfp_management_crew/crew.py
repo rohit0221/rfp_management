@@ -24,12 +24,14 @@ class RfpManagementCrew():
             config=self.agents_config['proposal_data_retriever'],
             tools=[retrieve_relevant_proposals],  # Use the retrieval tool
         )    
-    # @agent
-    # def rfp_analysis_expert(self) -> Agent:
-    #     return Agent(
-    #         config=self.agents_config['rfp_analysis_expert'],
-    #         tools=[CSVSearchTool(), TXTSearchTool()],
-    #     )
+    @agent
+    def rfp_analysis_expert(self) -> Agent:
+        """Agent responsible for analyzing supplier proposals and identifying key differences."""
+        return Agent(
+            config=self.agents_config['rfp_analysis_expert'],
+            tools=[],  # No external tools needed, LLM can process structured data
+        )   
+
 
     # @agent
     # def negotiation_charter_creator(self) -> Agent:
@@ -68,6 +70,14 @@ class RfpManagementCrew():
             config=self.tasks_config['retrieve_proposals'],  # Ensure this exists in tasks.yaml
             tools=[retrieve_relevant_proposals],  # Correctly use the retrieval tool
         )
+    @task
+    def analyze_rfp_responses(self) -> Task:
+        """Task for analyzing and comparing supplier proposals."""
+        return Task(
+            config=self.tasks_config['analyze_rfp_responses'],
+            inputs={"RFP_Responses": "{{retrieve_proposals}}"},  # ✅ Uses retrieval output
+        )
+
 
 
     # @task
@@ -154,3 +164,13 @@ class RfpManagementCrew():
             process=Process.sequential,  
             verbose=True,
         )
+    @crew
+    def analysis_crew(self) -> Crew:
+        """Crew responsible for analyzing supplier proposals and identifying key differences."""
+        return Crew(
+            agents=[self.rfp_analysis_expert()],  # Ensure this agent exists
+            tasks=[self.analyze_rfp_responses()],  # Ensure this task exists
+            process=Process.sequential,  
+            verbose=True,
+        )
+

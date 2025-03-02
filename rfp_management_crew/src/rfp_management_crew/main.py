@@ -19,27 +19,40 @@ def run():
     """
     Step-by-step execution:
     1️⃣ Process supplier proposals (Extract, chunk, and store in ChromaDB).
-    2️⃣ Retrieve & structure supplier proposals (Extract key details for evaluation).
+    2️⃣ Retrieve & structure supplier proposals.
+    3️⃣ Analyze and compare supplier proposals.
     """
 
     # ✅ Step 1: Process Supplier Proposals (Run only if needed)
     # print(" Step 1: Processing and storing supplier proposals in ChromaDB...")
     # processing_crew = RfpManagementCrew().processing_crew()
-    # processing_crew.kickoff(inputs={})
+    # processing_crew.kickoff(inputs={})  # Runs the processing crew
     # print(" Supplier proposals successfully processed and stored.\n")
 
     # ✅ Step 2: Retrieve Structured Proposals
-    print("Step 2: Retrieving structured supplier proposals from ChromaDB...")
+    print(" Step 2: Retrieving structured supplier proposals from ChromaDB...")
     retrieval_crew = RfpManagementCrew().retrieval_crew()
-    structured_text = retrieval_crew.kickoff(inputs={})  # Runs the retrieval crew
+    structured_proposals = retrieval_crew.kickoff(inputs={})  # Runs the retrieval crew
 
     print("\n Retrieved Supplier Proposal Sections:\n")
-    print(structured_text)  # ✅ Validate the formatted output
+    print(structured_proposals)  # ✅ Validate the formatted output
 
-    # ✅ Save structured supplier proposals in Markdown format
-    save_markdown(structured_text, filename="retrieved_supplier_proposals.md")
+    # ✅ Save retrieved proposals in Markdown
+    save_markdown(structured_proposals, filename="retrieved_supplier_proposals.md")
 
-    print("\n Retrieval complete. Structured supplier data saved in 'retrieved_supplier_proposals.md'.")
+    # ✅ Step 3: Analyze Supplier Proposals
+    print("\n Step 3: Analyzing supplier proposals for key differences and risks...")
+    analysis_crew = RfpManagementCrew().analysis_crew()
+    analysis_report = analysis_crew.kickoff(inputs={})  # ✅ No need to manually pass `structured_proposals`
+
+    print("\n Supplier Proposal Analysis Report:\n")
+    print(analysis_report)  # ✅ Validate structured analysis output
+
+    # ✅ Save Analysis Report in Markdown
+    save_markdown(analysis_report, filename="rfp_comparative_analysis.md")
+
+    print("\n Full process complete. Reports saved in 'retrieved_supplier_proposals.md' and 'rfp_comparative_analysis.md'.")
+
 
 
 def train():
