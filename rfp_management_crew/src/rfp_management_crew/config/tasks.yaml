@@ -33,18 +33,55 @@ retrieve_proposals:
 
 analyze_rfp_responses:
   description: >
-    Compare and analyze supplier proposals to extract key differences, risks, and opportunities.
-    Focus on discrepancies in Pricing, Contract Terms, Compliance, Support SLAs, and Implementation Timelines.
+    Conduct an **in-depth comparative analysis** of supplier proposals retrieved from ChromaDB.
+    
+    **Key Objectives:**
+    - **Compare supplier proposals** across Pricing, Contract Terms, Compliance, SLAs, and Implementation Timelines.
+    - **Identify and quantify risks** using AI-based predictive scoring.
+    - **Highlight negotiation opportunities** based on proposal strengths and weaknesses.
+    - **Ensure strictly fact-based reporting**—no assumptions, only retrieved proposal data is used.
+
   expected_output: >
-    A detailed comparative report highlighting:
-    - **Key Differences** between supplier proposals.
-    - **Risks & Concerns** in contract terms, compliance, and support.
-    - **Opportunities** for negotiation and optimization.
-    - **Overall Recommendations** for supplier selection.
+    A **detailed supplier evaluation report** structured as follows:
+
+    **1. Executive Summary**  
+    - High-level findings summarizing supplier strengths, weaknesses, and overall rankings.
+    - Key risks, pricing competitiveness, and major differentiators.
+
+    **2. Key Differences Between Supplier Proposals**  
+    - Structured table comparing:
+      - **Pricing** (Fixed vs. Usage-Based, Discounts, Escalation Clauses)
+      - **Contract Terms** (Lock-in Clauses, Termination Flexibility, Penalties)
+      - **Compliance** (SOC 2, HIPAA, ISO, PCI-DSS)
+      - **Support SLAs** (Response Times, Uptime, Penalties for Downtime)
+      - **Implementation Timelines** (Delivery Speed, Onboarding Process)
+      - **Past Performance & References** (Success Stories, Reputation)
+
+    **3. AI-Driven Risk Assessment**  
+    - **Pricing Volatility Score** (1-10)  
+    - **Delivery Risk Score** (1-10)  
+    - **Contract Risk Score** (1-10)  
+    - **Compliance Risk Score** (1-10)  
+    - Explanation of each score with supporting proposal details.
+
+    **4. Negotiation & Optimization Strategies**  
+    - Tactical recommendations to optimize pricing, SLAs, and contract flexibility.
+    - **Negotiation leverage points** for cost savings and improved terms.
+
+    **5. Final Recommendation**  
+    - Ranked supplier evaluation with justification.
+    - Key trade-offs, selection rationale, and next steps for negotiation.
+
   async_execution: false
   agent: rfp_analysis_expert
   context:
-    - retrieve_proposals  # ✅ This ensures analyze_rfp_responses receives retrieval output
+    - retrieve_proposals  # ✅ Ensures data comes only from structured supplier proposal retrieval
+
+
+  async_execution: false
+  agent: rfp_analysis_expert
+  context:
+    - retrieve_proposals  # ✅ Ensures supplier data is structured before analysis.
 
 load_historical_pricing_task:
   description: >
@@ -56,18 +93,20 @@ load_historical_pricing_task:
 
 analyze_pricing_risk:
   description: >
-    Compare supplier pricing against historical data to assess volatility and risk levels.
-    Identify pricing outliers, cost trends, and negotiation leverage points.
+    Conduct AI-driven analysis of supplier pricing trends by comparing proposal prices 
+    with historical contract data. Identify **volatility, cost trends, and negotiation leverage** 
+    based on past pricing behavior.
   expected_output: >
     A structured pricing risk report that includes:
-    - **Price Volatility**: Comparison with historical prices.
-    - **Risk Levels**: Low, Medium, or High based on variance from past trends.
-    - **Negotiation Leverage**: Insights on pricing trends to inform negotiations.
+    - **Price Volatility Score**: Quantifies fluctuations in pricing over the past three years.
+    - **Risk Assessment**: Categorizes suppliers into Low, Medium, or High risk based on variance.
+    - **Trend Analysis**: Identifies whether a supplier's price is increasing, stable, or decreasing.
+    - **Negotiation Leverage Points**: Highlights opportunities where suppliers may lower prices.
+    - **Forecasted Price Range**: AI-driven projection for future contract price expectations.
   async_execution: false
-  agent: rfp_analysis_expert
+  agent: pricing_risk_analysis_expert
   context:
-    - load_historical_pricing_task  # ✅ Fix: Context should be historical pricing, not retrieved proposals
-
+    - load_historical_pricing_task  # ✅ Ensure access to past pricing data
 
 
 # risk_analysis:

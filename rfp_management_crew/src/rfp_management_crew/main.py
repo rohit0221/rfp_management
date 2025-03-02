@@ -23,17 +23,17 @@ def run():
     # processing_crew = RfpManagementCrew().processing_crew()
     # processing_crew.kickoff(inputs={})
 
-    # # ✅ Step 2: Retrieve Structured Proposals
-    # print("\nStep 2: Retrieving structured supplier proposals from ChromaDB...")
-    # retrieval_crew = RfpManagementCrew().retrieval_crew()
-    # structured_proposals = retrieval_crew.kickoff(inputs={})
-    # save_markdown(structured_proposals, filename="retrieved_supplier_proposals.md")
+    # ✅ Step 2: Retrieve Structured Proposals
+    print("\nStep 2: Retrieving structured supplier proposals from ChromaDB...")
+    retrieval_crew = RfpManagementCrew().retrieval_crew()
+    structured_proposals = retrieval_crew.kickoff(inputs={})
+    save_markdown(structured_proposals, filename="retrieved_supplier_proposals.md")
 
-    # # ✅ Step 3: Analyze Supplier Proposals
-    # print("\nStep 3: Analyzing supplier proposals for key differences and risks...")
-    # proposal_analysis_crew = RfpManagementCrew().proposal_analysis_crew()
-    # comparative_analysis_report = proposal_analysis_crew.kickoff(inputs={})
-    # save_markdown(comparative_analysis_report, filename="rfp_comparative_analysis.md")
+    # ✅ Step 3: Analyze Supplier Proposals
+    print("\nStep 3: Analyzing supplier proposals for key differences and risks...")
+    proposal_analysis_crew = RfpManagementCrew().proposal_analysis_crew()
+    comparative_analysis_report = proposal_analysis_crew.kickoff(inputs={})
+    save_markdown(comparative_analysis_report, filename="rfp_comparative_analysis.md")
 
     # ✅ Step 4: Perform Pricing Risk Analysis
     print("\nStep 4: Performing pricing risk analysis using historical data...")
