@@ -3,8 +3,9 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import CSVSearchTool
 from crewai_tools import TXTSearchTool
 
-from rfp_management_crew.tools.pdf_vectorizer import process_and_store_pdfs  # Import tool
+from rfp_management_crew.tools.pdf_vectorizer import process_and_store_pdfs
 from rfp_management_crew.tools.retrieve_vectors import retrieve_relevant_proposals
+from rfp_management_crew.tools.analyze_pricing_risk import load_historical_pricing, pricing_risk_analysis_tool
 
 @CrewBase
 class RfpManagementCrew():
@@ -17,21 +18,30 @@ class RfpManagementCrew():
             config=self.agents_config['proposal_data_processor'],
             tools=[process_and_store_pdfs],
         )
+
     @agent
     def proposal_data_retriever(self) -> Agent:
         """Agent responsible for retrieving and structuring supplier proposals."""
         return Agent(
             config=self.agents_config['proposal_data_retriever'],
-            tools=[retrieve_relevant_proposals],  # Use the retrieval tool
+            tools=[retrieve_relevant_proposals],
         )    
+    
     @agent
     def rfp_analysis_expert(self) -> Agent:
-        """Agent responsible for analyzing supplier proposals and identifying key differences."""
+        """Agent responsible for analyzing supplier proposals."""
         return Agent(
             config=self.agents_config['rfp_analysis_expert'],
-            tools=[],  # No external tools needed, LLM can process structured data
-        )   
+            tools=[],  # ✅ No tools needed; relies only on structured data
+        )
 
+    @agent
+    def pricing_risk_analysis_expert(self) -> Agent:
+        """Agent responsible for analyzing supplier pricing risks using historical data."""
+        return Agent(
+            config=self.agents_config['pricing_risk_analysis_expert'],
+            tools=[pricing_risk_analysis_tool],  # ✅ Uses pricing risk tool
+        )
 
     # @agent
     # def negotiation_charter_creator(self) -> Agent:
@@ -55,7 +65,6 @@ class RfpManagementCrew():
     #     )
 
 #########################################TASKS#############################################
-
     @task
     def process_proposals(self) -> Task:
         """Task for processing and storing supplier proposals."""
@@ -63,22 +72,40 @@ class RfpManagementCrew():
             config=self.tasks_config['process_proposals'],
             tools=[process_and_store_pdfs],
         )
+
     @task
     def retrieve_proposals(self) -> Task:
         """Task for retrieving and structuring supplier proposals."""
-        return Task(  # ✅ Must return a Task, not a function reference!
-            config=self.tasks_config['retrieve_proposals'],  # Ensure this exists in tasks.yaml
-            tools=[retrieve_relevant_proposals],  # Correctly use the retrieval tool
+        return Task(
+            config=self.tasks_config['retrieve_proposals'],
+            tools=[retrieve_relevant_proposals],
         )
+
     @task
     def analyze_rfp_responses(self) -> Task:
         """Task for analyzing and comparing supplier proposals."""
         return Task(
             config=self.tasks_config['analyze_rfp_responses'],
-            inputs={"RFP_Responses": "{{retrieve_proposals}}"},  # ✅ Uses retrieval output
+            inputs={"RFP_Responses": "{{retrieve_proposals}}"},  
+            tools=[],  
         )
 
+    @task
+    def load_historical_pricing_task(self) -> Task:
+        """Task for loading historical pricing data from CSV."""
+        return Task(
+            config=self.tasks_config["load_historical_pricing_task"],
+            function=load_historical_pricing,  # ✅ Ensure this is called
+        )
 
+    @task
+    def analyze_pricing_risk(self) -> Task:
+        """Task for assessing supplier pricing risks using historical data."""
+        return Task(
+            config=self.tasks_config["analyze_pricing_risk"],
+            inputs={"historical_pricing_data": "{{load_historical_pricing_task}}"},
+            tools=[pricing_risk_analysis_tool],  
+        )
 
     # @task
     # def analyze_rfp_responses(self) -> Task:
@@ -143,34 +170,45 @@ class RfpManagementCrew():
     #         process=Process.sequential,
     #         verbose=True,
     #     )
-
     @crew
     def processing_crew(self) -> Crew:
         """Processing Crew: Extracts, chunks, and stores proposals in ChromaDB."""
         return Crew(
-            agents=[self.proposal_data_processor()],  # Only processing agent
-            tasks=[self.process_proposals()],  # Only processing task
-            process=Process.sequential,  # Ensures tasks run in order
+            agents=[self.proposal_data_processor()],
+            tasks=[self.process_proposals()],
+            process=Process.sequential,
             verbose=True,
         )
 
-    # ✅ Step 2 Crew: Runs only retrieve_proposals
     @crew
     def retrieval_crew(self) -> Crew:
         """Retrieval Crew: Fetches structured proposal data for analysis from ChromaDB"""
         return Crew(
-            agents=[self.proposal_data_retriever()],  # ✅ Ensure this is an Agent object
-            tasks=[self.retrieve_proposals()],  # ✅ Make sure to CALL the function!
-            process=Process.sequential,  
-            verbose=True,
-        )
-    @crew
-    def analysis_crew(self) -> Crew:
-        """Crew responsible for analyzing supplier proposals and identifying key differences."""
-        return Crew(
-            agents=[self.rfp_analysis_expert()],  # Ensure this agent exists
-            tasks=[self.analyze_rfp_responses()],  # Ensure this task exists
-            process=Process.sequential,  
+            agents=[self.proposal_data_retriever()],
+            tasks=[self.retrieve_proposals()],
+            process=Process.sequential,
             verbose=True,
         )
 
+    @crew
+    def proposal_analysis_crew(self) -> Crew:
+        """Crew responsible for analyzing supplier proposals."""
+        return Crew(
+            agents=[self.rfp_analysis_expert()],
+            tasks=[self.analyze_rfp_responses()],
+            process=Process.sequential,
+            verbose=True,
+        )
+
+    @crew
+    def pricing_risk_analysis_crew(self) -> Crew:
+        """Crew responsible for assessing supplier pricing risks using historical data."""
+        return Crew(
+            agents=[self.pricing_risk_analysis_expert()],
+            tasks=[
+                self.load_historical_pricing_task(),
+                self.analyze_pricing_risk(),
+            ],
+            process=Process.sequential,
+            verbose=True,
+        )

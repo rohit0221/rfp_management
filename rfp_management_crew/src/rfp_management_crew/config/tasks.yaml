@@ -38,13 +38,36 @@ analyze_rfp_responses:
   expected_output: >
     A detailed comparative report highlighting:
     - **Key Differences** between supplier proposals.
-    - **Risks & Concerns** in pricing, contract terms, compliance, and support.
+    - **Risks & Concerns** in contract terms, compliance, and support.
     - **Opportunities** for negotiation and optimization.
     - **Overall Recommendations** for supplier selection.
   async_execution: false
   agent: rfp_analysis_expert
   context:
     - retrieve_proposals  # ✅ This ensures analyze_rfp_responses receives retrieval output
+
+load_historical_pricing_task:
+  description: >
+    Load historical pricing data from a CSV file to enable price trend analysis.
+  expected_output: >
+    A structured dataset containing historical pricing trends per supplier.
+  async_execution: false
+  agent: rfp_analysis_expert
+
+analyze_pricing_risk:
+  description: >
+    Compare supplier pricing against historical data to assess volatility and risk levels.
+    Identify pricing outliers, cost trends, and negotiation leverage points.
+  expected_output: >
+    A structured pricing risk report that includes:
+    - **Price Volatility**: Comparison with historical prices.
+    - **Risk Levels**: Low, Medium, or High based on variance from past trends.
+    - **Negotiation Leverage**: Insights on pricing trends to inform negotiations.
+  async_execution: false
+  agent: rfp_analysis_expert
+  context:
+    - load_historical_pricing_task  # ✅ Fix: Context should be historical pricing, not retrieved proposals
+
 
 
 # risk_analysis:
