@@ -102,36 +102,14 @@ analyze_pricing_risk:
   context:
     - load_historical_pricing_task  # ✅ Ensure access to past pricing data
 
-load_forecasted_supply_demand_task:
+negotiation_charter_generation:
   description: >
-    Load forecasted supply-demand data and commodity pricing trends from historical data.
-  expected_output: >
-    A structured dataset containing forecasted price changes, supply trends, and demand pressures.
-  async_execution: false
+    Generate a detailed negotiation charter based on historical supply-demand 
+    data and AI-driven price forecasts. The final output should be a structured 
+    markdown document with pricing analysis, supplier risk assessment, and 
+    negotiation strategies.
+  expected_output: A fully detailed markdown negotiation charter report.
   agent: negotiation_charter_creator
-
-
-
-generate_negotiation_charter:
-  description: >
-    Generate a data-driven **Negotiation Charter** based on commodity price forecasts and supply-demand insights.
-    
-    This charter will:
-    - **Analyze historical price trends** to predict future price movements.
-    - **Assess supply-demand fluctuations** to optimize procurement strategy.
-    - **Identify bulk purchase opportunities** based on market conditions.
-    - **Recommend cost-effective negotiation strategies** for supplier agreements.
-  expected_output: >
-    A structured **Negotiation Charter Report** including:
-    - **Commodity Price Forecast Analysis** (trends, volatility, market shifts).
-    - **Supply-Demand Optimization Plan** (balancing inventory, avoiding shortages).
-    - **Negotiation Leverage Points** (bulk discounts, pricing strategies).
-    - **Procurement Recommendations** (ideal purchase timing, supplier selection).
-  async_execution: false
-  agent: negotiation_charter_creator
-  context:
-    - load_forecasted_supply_demand_task  # ✅ Ensures pricing trends are considered in negotiation
-    - analyze_pricing_risk  # ✅ Ensures pricing risk analysis is considered
 
 # risk_analysis:
 #   description: Utilize a predictive ML model to analyze risks related to pricing,

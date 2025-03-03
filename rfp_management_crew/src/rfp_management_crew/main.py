@@ -36,16 +36,16 @@ def run():
     # comparative_analysis_report = proposal_analysis_crew.kickoff(inputs={})
     # save_markdown(comparative_analysis_report, filename="rfp_comparative_analysis.md")
 
-    # ✅ Step 4: Perform Pricing Risk Analysis
-    print("\nStep 4: Performing pricing risk analysis using historical data...")
-    pricing_risk_analysis_crew = RfpManagementCrew().pricing_risk_analysis_crew()
-    pricing_risk_report = pricing_risk_analysis_crew.kickoff(inputs={})
-    save_markdown(pricing_risk_report, filename="pricing_risk_analysis.md")
+    # # ✅ Step 4: Perform Pricing Risk Analysis
+    # print("\nStep 4: Performing pricing risk analysis using historical data...")
+    # pricing_risk_analysis_crew = RfpManagementCrew().pricing_risk_analysis_crew()
+    # pricing_risk_report = pricing_risk_analysis_crew.kickoff(inputs={})
+    # save_markdown(pricing_risk_report, filename="pricing_risk_analysis.md")
 
     # ✅ Step 5: Generate AI-Powered Negotiation Charter
     print("\nStep 5: Generating AI-driven negotiation charter...")
-    negotiation_crew = RfpManagementCrew().negotiation_charter_crew()  # ✅ Fixed reference
-    negotiation_charter = negotiation_crew.kickoff(inputs={})
+    negotiation_charter_crew = RfpManagementCrew().negotiation_charter_crew()  # ✅ Fixed reference
+    negotiation_charter = negotiation_charter_crew.kickoff(inputs={})
 
     print("\n AI-Generated Negotiation Charter:\n")
     print(negotiation_charter)  # ✅ Validate output

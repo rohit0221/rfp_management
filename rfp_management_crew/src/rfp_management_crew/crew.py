@@ -4,7 +4,7 @@ from crewai.project import CrewBase, agent, crew, task
 from rfp_management_crew.tools.pdf_vectorizer import process_and_store_pdfs
 from rfp_management_crew.tools.retrieve_vectors import retrieve_relevant_proposals
 from rfp_management_crew.tools.analyze_pricing_risk import load_historical_pricing, pricing_risk_analysis_tool
-from rfp_management_crew.tools.negotiation import generate_forecasted_negotiation_strategy, load_supply_demand_forecast
+from rfp_management_crew.tools.negotiationchartercreator import negotiation_charter_creator_tool
 @CrewBase
 class RfpManagementCrew():
     """RfpManagementCrew crew"""
@@ -46,7 +46,7 @@ class RfpManagementCrew():
         """Agent responsible for generating a negotiation charter based on forecasts."""
         return Agent(
             config=self.agents_config["negotiation_charter_creator"],  
-            tools=[generate_forecasted_negotiation_strategy],  
+            tools=[negotiation_charter_creator_tool],  
         )
 
 
@@ -115,23 +115,11 @@ class RfpManagementCrew():
         )
     
     @task
-    def load_forecasted_supply_demand_task(self) -> Task:
-        """Task for loading supply-demand forecasts from CSV."""
-        return Task(
-            config=self.tasks_config["load_forecasted_supply_demand_task"],
-            function=load_supply_demand_forecast,  
-        )
-
-    @task
-    def generate_negotiation_charter(self) -> Task:
+    def negotiation_charter_generation(self) -> Task:
         """Task for generating a negotiation charter using AI-driven market analysis."""
         return Task(
-            config=self.tasks_config["generate_negotiation_charter"],
-            inputs={
-                "historical_prices": "{{load_historical_pricing_task}}",  # ✅ Uses preloaded historical data
-                "supply_demand": "{{load_forecasted_supply_demand_task}}",  # ✅ Uses preloaded supply-demand data
-            },
-            tools=[generate_forecasted_negotiation_strategy],  # ✅ Uses the fixed tool
+            config=self.tasks_config["negotiation_charter_generation"],
+            tools=[negotiation_charter_creator_tool],  # ✅ Uses the fixed tool
         )
     
 
@@ -247,9 +235,7 @@ class RfpManagementCrew():
         return Crew(
             agents=[self.negotiation_charter_creator()],  
             tasks=[
-                self.load_historical_pricing_task(),  
-                self.load_forecasted_supply_demand_task(),  
-                self.generate_negotiation_charter(),  
+                self.negotiation_charter_generation(),  
             ],
             process=Process.sequential,
             verbose=True,
