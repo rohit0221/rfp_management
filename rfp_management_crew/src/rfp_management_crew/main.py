@@ -24,40 +24,43 @@ def run():
     # processing_crew = RfpManagementCrew().processing_crew()
     # processing_crew.kickoff(inputs={})
 
-    # # ✅ Step 2: Retrieve Structured Proposals
-    # print("\nStep 2: Retrieving structured supplier proposals from ChromaDB...")
-    # retrieval_crew = RfpManagementCrew().retrieval_crew()
-    # structured_proposals = retrieval_crew.kickoff(inputs={})
-    # save_markdown(structured_proposals, filename="retrieved_supplier_proposals.md")
-
-    # # ✅ Step 3: Analyze Supplier Proposals
+    # # ✅ Step 2: Analyze Supplier Proposals
     # print("\nStep 3: Analyzing supplier proposals for key differences and risks...")
     # proposal_analysis_crew = RfpManagementCrew().proposal_analysis_crew()
     # comparative_analysis_report = proposal_analysis_crew.kickoff(inputs={})
     # save_markdown(comparative_analysis_report, filename="rfp_comparative_analysis.md")
 
-    # ✅ Step 4: Perform Pricing Risk Analysis
-    print("\nStep 4: Performing pricing risk analysis using historical data...")
-    pricing_risk_analysis_crew = RfpManagementCrew().pricing_risk_analysis_crew()
-    pricing_risk_report = pricing_risk_analysis_crew.kickoff(inputs={})
-    save_markdown(pricing_risk_report, filename="pricing_risk_analysis.md")
+    # # ✅ Step 3: Perform Pricing Risk Analysis
+    # print("\nStep 4: Performing pricing risk analysis using historical data...")
+    # pricing_risk_analysis_crew = RfpManagementCrew().pricing_risk_analysis_crew()
+    # pricing_risk_report = pricing_risk_analysis_crew.kickoff(inputs={})
+    # save_markdown(pricing_risk_report, filename="pricing_risk_analysis.md")
 
-    # ✅ Step 5: Generate AI-Powered Negotiation Charter
-    print("\nStep 5: Generating AI-driven negotiation charter...")
-    negotiation_charter_crew = RfpManagementCrew().negotiation_charter_crew()  # ✅ Fixed reference
-    negotiation_charter = negotiation_charter_crew.kickoff(inputs={})
+    # # ✅ Step 4: Generate AI-Powered Negotiation Charter
+    # print("\nStep 5: Generating AI-driven negotiation charter...")
+    # negotiation_charter_crew = RfpManagementCrew().negotiation_charter_crew()
+    # negotiation_charter = negotiation_charter_crew.kickoff(inputs={})
+    # save_markdown(negotiation_charter, filename="negotiation_charter.md")
 
-    print("\n AI-Generated Negotiation Charter:\n")
-    print(negotiation_charter)  # ✅ Validate output
 
-    # ✅ Save Negotiation Charter Report
-    save_markdown(negotiation_charter, filename="negotiation_charter.md")
+    # ✅ Step 5: Generate Negotiation email
+    print("\nStep 6: Generating negotiation email...")
+    negotiation_email_crew = RfpManagementCrew().negotiation_email_crew()
+    negotiation_email = negotiation_email_crew.kickoff(inputs={})
+    save_markdown(negotiation_email, filename="negotiation_email.md")
 
+    # ✅ Step 6: Generate Counter Offer email
+    print("\nStep 7: Generating counter offer email...")
+    counter_offer_email_crew = RfpManagementCrew().counteroffer_generation_crew()
+    counter_offer_email = counter_offer_email_crew.kickoff(inputs={})
+    save_markdown(counter_offer_email, filename="counter_offer_email.md")
+    
     print("\n📌 Reports saved:")
     print("   - 'retrieved_supplier_proposals.md'")
     print("   - 'rfp_comparative_analysis.md'")
     print("   - 'pricing_risk_analysis.md'")
     print("   - 'negotiation_charter.md'")
+    print("   - 'negotiation_email.md'")
 
 def train():
     """Train the crew for a given number of iterations."""

@@ -1,6 +1,6 @@
 import os
 
-def save_markdown(content, filename: str = "retrieved_supplier_proposals.md"):
+def save_markdown(content, filename):
     """
     Saves the retrieved supplier proposals to a Markdown file inside ./outputs.
     Ensures that content is converted to a string.
@@ -13,7 +13,6 @@ def save_markdown(content, filename: str = "retrieved_supplier_proposals.md"):
 
     output_path = os.path.join(output_dir, filename)
     with open(output_path, "w", encoding="utf-8") as md_file:
-        md_file.write("# Retrieved Supplier Proposal Sections\n\n")
         md_file.write(content)
 
     print(f"\n Output saved to {output_path}")

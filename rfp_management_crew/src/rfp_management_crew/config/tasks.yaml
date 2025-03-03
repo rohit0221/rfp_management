@@ -9,27 +9,6 @@ process_proposals:
   async_execution: false
   agent: proposal_data_processor
 
-retrieve_proposals:
-  description: >
-    Retrieve and structure supplier proposal sections stored in ChromaDB, focusing on key evaluation factors.
-    The extracted data will be **formatted into a structured Markdown document** for easy comparison.
-  expected_output: >
-    A well-structured **Markdown document** categorizing supplier proposal details into:
-    - **Pricing:** Cost structures, licensing models, additional fees.
-    - **Contract Terms:** Agreement duration, termination policies, penalties.
-    - **Compliance:** Industry standards met (HIPAA, ISO, SOC2).
-    - **Technical Capabilities:** Features, integrations, scalability.
-    - **Support & SLAs:** Response times, uptime guarantees, security audits.
-    - **Implementation Timeline:** Deployment timeline & onboarding expectations.
-    - **Past Performance:** Case studies, client success metrics.
-    - **Customization & Flexibility:** API integrations, enterprise-specific options.
-
-    The structured output will be used for supplier comparison and informed decision-making.
-  async_execution: false
-  agent: proposal_data_retriever
-  context:
-    - process_proposals
-
 
 analyze_rfp_responses:
   description: >
@@ -71,19 +50,8 @@ analyze_rfp_responses:
     **5. Final Recommendation**  
     - Ranked supplier evaluation with justification.
     - Key trade-offs, selection rationale, and next steps for negotiation.
-
   async_execution: false
   agent: rfp_analysis_expert
-  context:
-    - retrieve_proposals  # ✅ Ensures data comes only from structured supplier proposal retrieval
-
-# load_historical_pricing_task:
-#   description: >
-#     Load historical pricing data from a CSV file to enable price trend analysis.
-#   expected_output: >
-#     A structured dataset containing historical pricing trends per supplier.
-#   async_execution: false
-#   agent: pricing_risk_analysis_expert
 
 analyze_pricing_risk:
   description: >
@@ -109,48 +77,40 @@ negotiation_charter_generation:
   expected_output: A fully detailed markdown negotiation charter report.
   agent: negotiation_charter_creator
 
-# risk_analysis:
-#   description: Utilize a predictive ML model to analyze risks related to pricing,
-#     delivery, and contract terms based on {Historical_Pricing_Data}.
-#   expected_output: A risk analysis report detailing potential risks associated with
-#     pricing, delivery, and contract terms based on {Historical_Pricing_Data}.
-#   async_execution: false
-#   agent: rfp_analysis_expert
-#   context:
-#   - analyze_rfp_responses
-# generate_negotiation_charter:
-#   description: Create a negotiation charter based on {Commodity_Price_Forecasts} and
-#     {Supply_Demand_Data}.
-#   expected_output: A comprehensive negotiation charter outlining strategies based
-#     on {Commodity_Price_Forecasts} and {Supply_Demand_Data}.
-#   async_execution: false
-#   agent: negotiation_charter_creator
-# generate_supplier_communication:
-#   description: Generate and send email/chatbot responses for negotiation using {Negotiation_Terms}.
-#   expected_output: Automated email/chatbot responses tailored for supplier negotiations
-#     based on {Negotiation_Terms}.
-#   async_execution: false
-#   agent: supplier_negotiation_specialist
-# identify_counteroffers:
-#   description: Identify optimal counteroffers and recommend trade-offs based on {Negotiation_Terms}.
-#   expected_output: A list of recommended counteroffers and trade-offs for supplier
-#     negotiations based on {Negotiation_Terms}.
-#   async_execution: false
-#   agent: supplier_negotiation_specialist
-#   context:
-#   - generate_supplier_communication
-# draft_contract:
-#   description: Prepare a contract template based on negotiated terms and highlight
-#     deviations using {Negotiated_Terms}.
-#   expected_output: A drafted contract template that includes negotiated terms and
-#     highlights any deviations for legal review based on {Negotiated_Terms}.
-#   async_execution: false
-#   agent: contract_drafting_expert
-# legal_review:
-#   description: Flag non-compliant clauses for legal approval based on {Drafted_Contract}.
-#   expected_output: A report identifying non-compliant clauses in the drafted contract
-#     based on {Drafted_Contract}.
-#   async_execution: false
-#   agent: contract_drafting_expert
-#   context:
-#   - draft_contract
+create_negotiation_email:
+  description: Generate a detailed, persuasive negotiation email leveraging RFP insights, pricing risks, and negotiation strategies.
+  expected_output: >
+        You are a **Big 4 Consulting Director** crafting a supplier negotiation email.
+        Based on the analysis below, write a **highly professional and strategic email** addressing key negotiation points.       
+        **Email Structure:**
+        - **Subject:** Strategic Supplier Engagement: Key Negotiation Points & Next Steps
+        - **Salutation**
+        - **Introduction (Concise, Impactful)**: Reference supplier proposal & evaluation.
+        - **Key Findings from Supplier Evaluation**: Pricing competitiveness, risk factors, unique value proposition.
+        - **Areas for Negotiation**: Price adjustments, contract flexibility, SLA enhancements, additional value adds.
+        - **Call to Action (CTA)**: Request supplier response & meeting scheduling.
+        
+        Ensure the email is clear, persuasive, and maintains a **formal tone**.
+        """
+  agent: negotiation_email_writer  
+
+create_counteroffers:
+  description: "Generate strategic counteroffers in anticipation of supplier responses using AI-driven analysis."
+  expected_output: >
+        You are a **Big 4 Consulting Director** responsible for supplier negotiations.
+        Based on the initial negotiation email and the strategic counteroffers, generate a **final supplier negotiation email** that:
+        
+        - Acknowledges previous discussions and supplier response.
+        - Presents refined counteroffers in a persuasive and strategic manner.
+        - Maintains a **formal and professional tone**.
+        - Includes a **strong call to action** for finalizing terms.
+        
+        **Email Structure:**
+        - **Subject:** Refining Our Supplier Engagement – Final Negotiation Terms
+        - **Salutation**
+        - **Introduction**: Reference previous discussions and supplier engagement.
+        - **Revised Offer Details**: Present counteroffers with justification.
+        - **Final Call to Action**: Push for agreement or final negotiation round.
+        
+        Ensure the email is **concise, data-backed, and business-oriented**.
+  agent: counteroffer_creator
