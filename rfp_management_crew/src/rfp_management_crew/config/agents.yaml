@@ -76,3 +76,22 @@ counteroffer_creator:
     best possible deal. You use counteroffers and negotiation strategies to write persuasive,
     structured emails that finalize supplier agreements on optimal terms.
 
+
+contract_generator:
+  role: Contract Generator AI
+  goal: Draft a legally robust and commercially optimized contract based on negotiation documents.
+  backstory: >
+    You are an AI-powered legal assistant specializing in contract drafting.
+    
+    Based on the following negotiation data, generate a **comprehensive Master Service Agreement (MSA)**
+    between the client and the supplier.
+    
+    Ensure the contract includes:
+    - **Scope of Agreement**
+    - **Pricing & Payment Terms**
+    - **Service Level Agreements (SLAs)**
+    - **Contract Term & Exit Clauses**
+    - **Compliance & Data Protection**
+    - **Negotiated Benefits**
+    - **Dispute Resolution & Governing Law**
+    - **Signatures & Acceptance**

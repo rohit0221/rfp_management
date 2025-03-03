@@ -55,6 +55,12 @@ def run():
     # counter_offer_email = counter_offer_email_crew.kickoff(inputs={})
     # save_markdown(counter_offer_email, filename="5.counter_offer_email.md")
     
+    # ✅ **Step 8: Generate AI-Powered Contract**
+    print("\n🔹 Step 8: Generating AI-Powered Contract based on negotiation insights...")
+    contract_generator_crew = RfpManagementCrew().contract_generator_crew()
+    contract_document = contract_generator_crew.kickoff(inputs={})
+    save_markdown(contract_document, filename="6.final_contract.md")
+
     print("\n📌 Reports saved:")
     print("   - '0.retrieved_supplier_proposals.md'")
     print("   - '1.rfp_comparative_analysis.md'")

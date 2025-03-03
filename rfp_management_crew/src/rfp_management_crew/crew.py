@@ -7,7 +7,7 @@ from rfp_management_crew.tools.analyze_pricing_risk import pricing_risk_analysis
 from rfp_management_crew.tools.negotiationchartercreator import negotiation_charter_creator_tool
 from rfp_management_crew.tools.negotiation_email_writer import generate_negotiation_email
 from rfp_management_crew.tools.counter_offer_generator import generate_final_negotiation_email
-
+from rfp_management_crew.tools.contract_generator import generate_contract
 
 @CrewBase
 class RfpManagementCrew():
@@ -60,6 +60,13 @@ class RfpManagementCrew():
             tools=[generate_final_negotiation_email],
             # llm=False  # ✅ Prevents CrewAI from generating an alternative response
         )    
+    @agent
+    def contract_generator(self) -> Agent:
+        """Agent responsible for transforming negotiation insights into a structured contract."""
+        return Agent(
+            config=self.agents_config["contract_generator"],  
+            tools=[generate_contract],  
+        )    
 
 #########################################TASKS#############################################
     @task
@@ -110,7 +117,15 @@ class RfpManagementCrew():
             config=self.tasks_config["create_counteroffers"],
             tools=[generate_final_negotiation_email],
         )
-   
+
+    @task
+    def generate_contract(self) -> Task:
+        """Task for drafting a legally robust and commercially optimized contract."""
+        return Task(
+            config=self.tasks_config["generate_contract"],
+            tools=[generate_contract],  
+        )
+
 ########################## CREWS ########################################
    
     @crew
@@ -183,4 +198,13 @@ class RfpManagementCrew():
             process=Process.sequential,
             verbose=True
         )
+    @crew
+    def contract_generator_crew(self) -> Crew:
+        """Crew responsible for contract generation using AI-driven negotiation insights."""
+        return Crew(
+            agents=[self.contract_generator()],  
+            tasks=[self.generate_contract()],  
+            process=Process.sequential,
+            verbose=True,
+        )    
     
