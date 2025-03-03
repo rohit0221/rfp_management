@@ -77,13 +77,13 @@ analyze_rfp_responses:
   context:
     - retrieve_proposals  # ✅ Ensures data comes only from structured supplier proposal retrieval
 
-load_historical_pricing_task:
-  description: >
-    Load historical pricing data from a CSV file to enable price trend analysis.
-  expected_output: >
-    A structured dataset containing historical pricing trends per supplier.
-  async_execution: false
-  agent: pricing_risk_analysis_expert
+# load_historical_pricing_task:
+#   description: >
+#     Load historical pricing data from a CSV file to enable price trend analysis.
+#   expected_output: >
+#     A structured dataset containing historical pricing trends per supplier.
+#   async_execution: false
+#   agent: pricing_risk_analysis_expert
 
 analyze_pricing_risk:
   description: >
@@ -99,8 +99,6 @@ analyze_pricing_risk:
     - **Forecasted Price Range**: AI-driven projection for future contract price expectations.
   async_execution: false
   agent: pricing_risk_analysis_expert
-  context:
-    - load_historical_pricing_task  # ✅ Ensure access to past pricing data
 
 negotiation_charter_generation:
   description: >

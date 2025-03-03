@@ -3,7 +3,7 @@ from crewai.project import CrewBase, agent, crew, task
 
 from rfp_management_crew.tools.pdf_vectorizer import process_and_store_pdfs
 from rfp_management_crew.tools.retrieve_vectors import retrieve_relevant_proposals
-from rfp_management_crew.tools.analyze_pricing_risk import load_historical_pricing, pricing_risk_analysis_tool
+from rfp_management_crew.tools.analyze_pricing_risk import pricing_risk_analysis_tool
 from rfp_management_crew.tools.negotiationchartercreator import negotiation_charter_creator_tool
 @CrewBase
 class RfpManagementCrew():
@@ -97,20 +97,20 @@ class RfpManagementCrew():
             tools=[],  
         )
 
-    @task
-    def load_historical_pricing_task(self) -> Task:
-        """Task for loading historical pricing data from CSV."""
-        return Task(
-            config=self.tasks_config["load_historical_pricing_task"],
-            function=load_historical_pricing,  
-        )
+    # @task
+    # def load_historical_pricing_task(self) -> Task:
+    #     """Task for loading historical pricing data from CSV."""
+    #     return Task(
+    #         config=self.tasks_config["load_historical_pricing_task"],
+    #         function=load_historical_pricing,  
+    #     )
 
     @task
     def analyze_pricing_risk(self) -> Task:
         """Task for assessing supplier pricing risks using historical data."""
         return Task(
             config=self.tasks_config["analyze_pricing_risk"],
-            inputs={"historical_pricing_data": "{{load_historical_pricing_task}}"},
+            # inputs={"historical_pricing_data": "{{load_historical_pricing_task}}"},
             tools=[pricing_risk_analysis_tool],  
         )
     
@@ -222,7 +222,6 @@ class RfpManagementCrew():
         return Crew(
             agents=[self.pricing_risk_analysis_expert()],
             tasks=[
-                self.load_historical_pricing_task(),
                 self.analyze_pricing_risk(),
             ],
             process=Process.sequential,

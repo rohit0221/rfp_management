@@ -1,115 +1,131 @@
+import csv
+import os
+import json
+from collections import defaultdict
+from langchain.prompts import PromptTemplate
+from langchain.chat_models import ChatOpenAI
+from langchain.output_parsers import StructuredOutputParser, ResponseSchema
 from crewai.tools import tool
 
-import csv
-import os
-from collections import defaultdict
+# Initialize the LLM
+llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.7)
 
-
-import csv
-import os
-from collections import defaultdict
-from typing import Dict, List, Optional
-
-def load_csv_data(
-    csv_file: str,
-    key_columns: List[str],
-    value_column: str,
-    convert_to_float: bool = True
-) -> Dict:
+@tool
+def pricing_risk_analysis_tool():
     """
-    Loads structured data from a CSV file and organizes it based on given key columns.
-    
-    Parameters:
-        csv_file (str): Path to the CSV file.
-        key_columns (List[str]): Column names used as keys (e.g., ["Supplier Name", "Service"]).
-        value_column (str): Column name containing the values (e.g., "Price ($)").
-        convert_to_float (bool): If True, converts values to float (default: True).
-
-    Returns:
-        Dict: Nested dictionary structure with keys based on key_columns.
-    
-    Example Usage:
-        - load_csv_data("historical_pricing.csv", ["Supplier Name", "Service"], "Price ($)")
-        - load_csv_data("supply_demand.csv", ["Region", "Product"], "Demand Forecast")
+    Generates a comprehensive pricing risk analysis report based on historical price data.
     """
+    pricing_history = load_pricing_history()
+    if not pricing_history:
+        return "No valid pricing history found. Please check the input CSV."
 
-    structured_data = defaultdict(lambda: defaultdict(list)) if len(key_columns) > 1 else defaultdict(list)
+    risk_analysis = generate_pricing_risk_report(pricing_history)
+    return risk_analysis
 
+def load_pricing_history(csv_file="./data/pricing_history/historical_pricing.csv"):
+    """
+    Loads historical pricing data from a CSV file with columns:
+    Supplier, Year, Service, Price ($).
+    Returns a nested dictionary formatted as:
+    {
+      <Service>: {
+        "<Year>": {
+          <Supplier>: <Price>
+        }
+      },
+      ...
+    }
+    """
+    pricing_data = defaultdict(lambda: defaultdict(dict))
+    
     if not os.path.exists(csv_file):
         print(f"⚠️ Warning: {csv_file} not found!")
         return {}
-
+    
     with open(csv_file, mode="r", newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
-        
-        # Validate columns
-        missing_cols = [col for col in key_columns + [value_column] if col not in reader.fieldnames]
+        required_cols = ["Supplier", "Year", "Service", "Price ($)"]
+        missing_cols = [col for col in required_cols if col not in reader.fieldnames]
         if missing_cols:
             print(f"⚠️ Warning: Missing columns in {csv_file}: {missing_cols}")
             return {}
 
-        # Process each row
         for row in reader:
-            keys = tuple(row[col] for col in key_columns)  # Create a tuple key from key_columns
-            value = float(row[value_column]) if convert_to_float else row[value_column]
+            supplier = row["Supplier"].strip()
+            year = row["Year"].strip()
+            service = row["Service"].strip()
+            
+            try:
+                price = float(row["Price ($)"].replace(',', ''))
+            except ValueError:
+                print(f"⚠️ Warning: Non-numeric price in row: {row}")
+                continue
 
-            # Store data in appropriate structure
-            if len(key_columns) > 1:
-                structured_data[keys[0]][keys[1]].append(value)  # Nested structure for multiple keys
-            else:
-                structured_data[keys[0]].append(value)  # Flat dictionary for single key
+            pricing_data[service][year][supplier] = price
+    
+    return dict(pricing_data)
 
-    return structured_data
-
-
-def load_historical_pricing(csv_file="./data/pricing_history/historical_pricing.csv"):
+def generate_pricing_risk_report(pricing_data: dict):
     """
-    Loads historical pricing data from a CSV file and organizes it by supplier and service.
-
-    Returns:
-        dict: {Supplier Name -> {Service -> [Price List]}}
+    Uses an LLM to analyze pricing history and generate a risk report.
     """
-    return load_csv_data(
-        csv_file=csv_file,
-        key_columns=["Supplier Name", "Service"],  # Columns to structure data
-        value_columns=["Price ($)"]  # Column(s) containing pricing data
+    context = json.dumps(pricing_data, indent=2)
+
+    response_schemas = [
+        ResponseSchema(name="pricing_risk_report", description="A structured markdown report analyzing pricing trends, risks, and strategic recommendations.")
+    ]
+
+    output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
+    format_instructions = output_parser.get_format_instructions()
+
+    prompt_template = PromptTemplate(
+        input_variables=["context"],
+        template="""
+        You are an **AI Financial Risk Analyst** specializing in **pricing strategy and risk assessment**.
+        Based on the **historical pricing data** provided below, generate a **comprehensive Pricing Risk Analysis Report**.
+
+        **Guidelines:**
+        - Identify **price volatility trends** (stable, fluctuating, extreme variations).
+        - Detect **market risks** based on price fluctuations.
+        - Assess **supplier pricing consistency** (high-risk suppliers with volatile pricing).
+        - Predict **future pricing trends** based on historical patterns.
+        - Offer **strategic procurement recommendations** (lock in contracts, diversify suppliers, negotiate better rates).
+        - Present the analysis in a **detailed markdown report** format.
+
+        ---
+        ## 📊 **Pricing Risk Analysis Report**
+        ### **1. Historical Price Trends**
+        - Identify key **price movements** for each service.
+        - Highlight **most volatile and most stable services**.
+
+        ### **2. Market Risks & Opportunities**
+        - Assess **inflationary risks**, seasonal patterns, and demand-driven pricing shifts.
+        - Identify potential **opportunities for cost savings**.
+
+        ### **3. Supplier Risk Assessment**
+        - Evaluate **pricing consistency among suppliers**.
+        - Identify **high-risk suppliers** due to frequent price fluctuations.
+
+        ### **4. Future Price Predictions**
+        - Forecast **expected price trends** for the next 4 quarters.
+        - Provide confidence levels for predictions.
+
+        ### **5. Strategic Recommendations**
+        ✅ **Lock in contracts for stable prices?**
+        ✅ **Diversify supplier base to reduce dependency?**
+        ✅ **Negotiate better rates based on insights?**
+
+        **Pricing Data:**
+        ```json
+        {context}
+        ```
+
+        {format_instructions}
+        """,
+        partial_variables={"format_instructions": format_instructions}
     )
 
-
-@tool
-def pricing_risk_analysis_tool(proposals: dict, historical_pricing: dict) -> str:
-    """
-    Compares supplier proposals against historical pricing data and calculates risk.
-    Returns a structured markdown summary.
-    """
-
-    risk_report = "###  Pricing Risk Analysis Report\n\n"
-
-    for supplier, details in proposals.items():
-        service = details["service"]
-        current_price = details["price"]
-
-        # Retrieve past prices for this supplier & service
-        past_prices = historical_pricing.get(supplier, {}).get(service, [])
-
-        if not past_prices:
-            risk_report += f"- **{supplier}**: No historical data available for comparison.\n"
-            continue
-
-        # Calculate average past price and deviation
-        avg_past_price = sum(past_prices) / len(past_prices)
-        price_diff = current_price - avg_past_price
-        price_variance = (price_diff / avg_past_price) * 100  # Percentage change
-
-        # Assign a risk level
-        if abs(price_variance) < 5:
-            risk_level = "Low Risk"
-        elif abs(price_variance) < 15:
-            risk_level = "Moderate Risk"
-        else:
-            risk_level = "High Risk"
-
-        risk_report += f"- **{supplier}**: Proposed price is **${current_price}**, past avg **${avg_past_price:.2f}**.\n"
-        risk_report += f"  - **Variance**: {price_variance:.1f}% ({risk_level})\n"
-
-    return risk_report
+    chain = prompt_template | llm | output_parser
+    risk_report = chain.invoke({"context": context})
+    
+    return risk_report["pricing_risk_report"]
