@@ -21,10 +21,10 @@ def generate_counteroffers():
     CrewAI tool to generate strategic counteroffers based on RFP analysis, pricing risk, negotiation strategy, and negotiation email.
     """
     # ✅ Read input markdown files
-    rfp_analysis = read_markdown_file("./outputs/rfp_comparative_analysis.md")
-    pricing_risk = read_markdown_file("./outputs/pricing_risk_analysis.md")
-    negotiation_charter = read_markdown_file("./outputs/negotiation_charter.md")
-    negotiation_email = read_markdown_file("./outputs/negotiation_email.md")
+    rfp_analysis = read_markdown_file("./outputs/1.rfp_comparative_analysis.md")
+    pricing_risk = read_markdown_file("./outputs/2.pricing_risk_analysis.md")
+    negotiation_charter = read_markdown_file("./outputs/3.negotiation_charter.md")
+    negotiation_email = read_markdown_file("./outputs/4.negotiation_email.md")
     
     # ✅ Combine context for LLM
     context = f"""
@@ -75,7 +75,7 @@ def generate_counteroffers():
     chain = prompt_template | llm
     counteroffer_content = chain.invoke({"context": context})
     counteroffer_content = counteroffer_content.content if hasattr(counteroffer_content, "content") else counteroffer_content
-    save_markdown(counteroffer_content, filename="Counteroffer_Strategy.md")
+    save_markdown(counteroffer_content, filename="5a.counteroffer_strategy.md")
     print("I am here")
     print("Saving Counter Offer strategy")
     return counteroffer_content
@@ -87,7 +87,7 @@ def generate_final_negotiation_email():
     """
     # ✅ Read input markdown files
     counteroffers = generate_counteroffers()
-    negotiation_email = read_markdown_file("./data/negotiation_email.md")
+    negotiation_email = read_markdown_file("./outputs/negotiation_email.md")
     
     # ✅ Combine context for LLM
     context = f"""

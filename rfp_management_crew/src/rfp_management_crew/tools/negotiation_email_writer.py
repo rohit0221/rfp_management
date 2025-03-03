@@ -20,9 +20,9 @@ def generate_negotiation_email():
     CrewAI tool to generate a professional supplier negotiation email based on RFP analysis, pricing risk, and negotiation strategy.
     """
     # ✅ Read input markdown files
-    rfp_analysis = read_markdown_file("./outputs/rfp_comparative_analysis.md")
-    pricing_risk = read_markdown_file("./outputs/pricing_risk_analysis.md")
-    negotiation_charter = read_markdown_file("./outputs/negotiation_charter.md")
+    rfp_analysis = read_markdown_file("./outputs/1.rfp_comparative_analysis.md")
+    pricing_risk = read_markdown_file("./outputs/2.pricing_risk_analysis.md")
+    negotiation_charter = read_markdown_file("./outputs/3.negotiation_charter.md")
     
     # ✅ Combine context for LLM
     context = f"""
