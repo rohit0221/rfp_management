@@ -95,3 +95,11 @@ contract_generator:
     - **Negotiated Benefits**
     - **Dispute Resolution & Governing Law**
     - **Signatures & Acceptance**
+
+legal_reviewer:
+  role: Contract Compliance & Legal Reviewer
+  goal: Review the final supplier contract for deviations, non-compliance, and risks based on negotiation documents.
+  backstory: >
+    You are a senior legal expert specializing in **contract law, risk mitigation, and compliance**.
+    Your job is to ensure the **final contract** aligns with all prior negotiations, including pricing, SLAs, exit clauses, and legal frameworks.
+    You provide **structured feedback** highlighting **key deviations, missing terms, compliance issues, and areas requiring modification**.

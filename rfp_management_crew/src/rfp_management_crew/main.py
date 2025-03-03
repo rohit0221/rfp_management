@@ -55,11 +55,16 @@ def run():
     # counter_offer_email = counter_offer_email_crew.kickoff(inputs={})
     # save_markdown(counter_offer_email, filename="5.counter_offer_email.md")
     
-    # ✅ **Step 8: Generate AI-Powered Contract**
-    print("\n🔹 Step 8: Generating AI-Powered Contract based on negotiation insights...")
-    contract_generator_crew = RfpManagementCrew().contract_generator_crew()
-    contract_document = contract_generator_crew.kickoff(inputs={})
-    save_markdown(contract_document, filename="6.final_contract.md")
+    # # ✅ **Step 8: Generate AI-Powered Contract**
+    # print("\n🔹 Step 8: Generating AI-Powered Contract based on negotiation insights...")
+    # contract_generator_crew = RfpManagementCrew().contract_generator_crew()
+    # contract_document = contract_generator_crew.kickoff(inputs={})
+    # save_markdown(contract_document, filename="6.final_contract.md")
+
+    print("\n🔹 Step 9: Reviewing the final contract for legal compliance and deviations...")
+    contract_reviewer_crew = RfpManagementCrew().contract_reviewer_crew()
+    contract_review_output = contract_reviewer_crew.kickoff(inputs={})
+    save_markdown(contract_review_output, filename="7.contract_review.md")
 
     print("\n📌 Reports saved:")
     print("   - '0.retrieved_supplier_proposals.md'")
@@ -69,6 +74,7 @@ def run():
     print("   - '4.negotiation_email.md'")
     print("   - '5a.counteroffer_strategy.md'")
     print("   - '5.counter_offer_email.md'")
+    print("   - '7.contract_review.md'")
 
 def train():
     """Train the crew for a given number of iterations."""

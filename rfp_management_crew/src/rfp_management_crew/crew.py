@@ -8,6 +8,7 @@ from rfp_management_crew.tools.negotiationchartercreator import negotiation_char
 from rfp_management_crew.tools.negotiation_email_writer import generate_negotiation_email
 from rfp_management_crew.tools.counter_offer_generator import generate_final_negotiation_email
 from rfp_management_crew.tools.contract_generator import generate_contract
+from rfp_management_crew.tools.legal_review import review_contract
 
 @CrewBase
 class RfpManagementCrew():
@@ -68,6 +69,13 @@ class RfpManagementCrew():
             tools=[generate_contract],  
         )    
 
+    @agent
+    def legal_reviewer(self) -> Agent:
+        """Agent responsible for reviewing the final supplier contract."""
+        return Agent(
+            config=self.agents_config["legal_reviewer"],  
+            tools=[review_contract],  
+        )
 #########################################TASKS#############################################
     @task
     def process_proposals(self) -> Task:
@@ -126,6 +134,13 @@ class RfpManagementCrew():
             tools=[generate_contract],  
         )
 
+    @task
+    def review_contract(self) -> Task:
+        """Task for conducting a legal and compliance review of the contract."""
+        return Task(
+            config=self.tasks_config["review_contract"],
+            tools=[review_contract],  
+        )
 ########################## CREWS ########################################
    
     @crew
@@ -208,3 +223,14 @@ class RfpManagementCrew():
             verbose=True,
         )    
     
+    @crew
+    def contract_reviewer_crew(self) -> Crew:
+        """Crew responsible for reviewing the contract for compliance and legal accuracy."""
+        return Crew(
+            agents=[self.legal_reviewer()],  
+            tasks=[
+                self.review_contract(),  
+            ],
+            process=Process.sequential,
+            verbose=True,
+        )    

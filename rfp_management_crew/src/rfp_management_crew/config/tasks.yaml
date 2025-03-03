@@ -214,3 +214,11 @@ generate_contract:
       **Date:** ___________________
       ```
   agent: contract_generator  
+
+review_contract:
+  description: Conduct a legal and compliance review of the final supplier contract.
+  expected_output: >
+    - A **structured contract review report** highlighting deviations, risks, and missing elements.
+    - **Actionable corrections** to align the contract with prior negotiations.
+    - A **final verdict**: Approve, Needs Minor Modifications, or Requires Major Revisions.
+  agent: legal_reviewer
