@@ -61,10 +61,16 @@ def run():
     # contract_document = contract_generator_crew.kickoff(inputs={})
     # save_markdown(contract_document, filename="6.final_contract.md")
 
+    # print("\n🔹 Step 9: Reviewing the final contract for legal compliance and deviations...")
+    # contract_reviewer_crew = RfpManagementCrew().contract_reviewer_crew()
+    # contract_review_output = contract_reviewer_crew.kickoff(inputs={})
+    # save_markdown(contract_review_output, filename="7.contract_review.md")
+
+    # ✅ Step 9: Reviewing the final contract for legal compliance
     print("\n🔹 Step 9: Reviewing the final contract for legal compliance and deviations...")
-    contract_reviewer_crew = RfpManagementCrew().contract_reviewer_crew()
-    contract_review_output = contract_reviewer_crew.kickoff(inputs={})
-    save_markdown(contract_review_output, filename="7.contract_review.md")
+    contract_revision_crew = RfpManagementCrew().contract_revision_crew()
+    revised_contract = contract_revision_crew.kickoff(inputs={})
+    save_markdown(revised_contract, filename="8.revised_final_contract.md")
 
     print("\n📌 Reports saved:")
     print("   - '0.retrieved_supplier_proposals.md'")

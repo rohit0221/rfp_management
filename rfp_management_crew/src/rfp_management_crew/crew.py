@@ -9,6 +9,7 @@ from rfp_management_crew.tools.negotiation_email_writer import generate_negotiat
 from rfp_management_crew.tools.counter_offer_generator import generate_final_negotiation_email
 from rfp_management_crew.tools.contract_generator import generate_contract
 from rfp_management_crew.tools.legal_review import review_contract
+from rfp_management_crew.tools.revise_contract import generate_revised_contract
 
 @CrewBase
 class RfpManagementCrew():
@@ -76,6 +77,14 @@ class RfpManagementCrew():
             config=self.agents_config["legal_reviewer"],  
             tools=[review_contract],  
         )
+
+    @agent
+    def contract_reviser(self) -> Agent:
+        """Agent responsible for revising the final contract based on review feedback."""
+        return Agent(
+            config=self.agents_config["contract_reviser"],
+            tools=[generate_revised_contract],  # ✅ Uses the contract revision tool
+        )    
 #########################################TASKS#############################################
     @task
     def process_proposals(self) -> Task:
@@ -141,6 +150,14 @@ class RfpManagementCrew():
             config=self.tasks_config["review_contract"],
             tools=[review_contract],  
         )
+    
+    @task
+    def revise_contract_task(self) -> Task:
+        """Task for incorporating review comments into the final contract."""
+        return Task(
+            config=self.tasks_config["revise_contract_task"],
+            tools=[generate_revised_contract],  # ✅ Uses the contract revision tool
+        )    
 ########################## CREWS ########################################
    
     @crew
@@ -233,4 +250,14 @@ class RfpManagementCrew():
             ],
             process=Process.sequential,
             verbose=True,
-        )    
+        ) 
+
+    @crew
+    def contract_revision_crew(self) -> Crew:
+        """Crew responsible for generating a revised final contract."""
+        return Crew(
+            agents=[self.contract_reviser()],
+            tasks=[self.revise_contract_task()],
+            process=Process.sequential,
+            verbose=True,
+        )       

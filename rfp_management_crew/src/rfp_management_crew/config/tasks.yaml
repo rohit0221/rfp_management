@@ -222,3 +222,11 @@ review_contract:
     - **Actionable corrections** to align the contract with prior negotiations.
     - A **final verdict**: Approve, Needs Minor Modifications, or Requires Major Revisions.
   agent: legal_reviewer
+
+revise_contract_task:
+  description: Read the contract review comments and update the final contract accordingly.
+  expected_output: >
+    - A fully revised contract in markdown format, incorporating feedback from the review.
+    - All deviations corrected, missing clauses added, and compliance ensured.
+    - The contract should be legally binding and aligned with negotiated terms.
+  agent: contract_reviser
