@@ -19,60 +19,60 @@ def run():
     5️⃣ Generate a negotiation charter using AI-driven market insights.
     """
 
-    # # ✅ Step 1: Process Supplier Proposals
-    # print("Step 1: Processing and storing supplier proposals in ChromaDB...")
-    # processing_crew = RfpManagementCrew().processing_crew()
-    # processing_crew.kickoff(inputs={})
+    # ✅ Step 1: Process Supplier Proposals
+    print("Step 1: Processing and storing supplier proposals in ChromaDB...")
+    processing_crew = RfpManagementCrew().processing_crew()
+    processing_crew.kickoff(inputs={})
 
-    # # ✅ Step 2: Analyze Supplier Proposals
-    # print("\nStep 3: Analyzing supplier proposals for key differences and risks...")
-    # proposal_analysis_crew = RfpManagementCrew().proposal_analysis_crew()
-    # comparative_analysis_report = proposal_analysis_crew.kickoff(inputs={})
-    # save_markdown(comparative_analysis_report, filename="1.rfp_comparative_analysis.md")
+    # ✅ Step 2: Analyze Supplier Proposals
+    print("\nStep 3: Analyzing supplier proposals for key differences and risks...")
+    proposal_analysis_crew = RfpManagementCrew().proposal_analysis_crew()
+    comparative_analysis_report = proposal_analysis_crew.kickoff(inputs={})
+    save_markdown(comparative_analysis_report, filename="1.rfp_comparative_analysis.md")
 
-    # # ✅ Step 3: Perform Pricing Risk Analysis
-    # print("\nStep 4: Performing pricing risk analysis using historical data...")
-    # pricing_risk_analysis_crew = RfpManagementCrew().pricing_risk_analysis_crew()
-    # pricing_risk_report = pricing_risk_analysis_crew.kickoff(inputs={})
-    # save_markdown(pricing_risk_report, filename="2.pricing_risk_analysis.md")
+    # ✅ Step 3: Perform Pricing Risk Analysis
+    print("\nStep 4: Performing pricing risk analysis using historical data...")
+    pricing_risk_analysis_crew = RfpManagementCrew().pricing_risk_analysis_crew()
+    pricing_risk_report = pricing_risk_analysis_crew.kickoff(inputs={})
+    save_markdown(pricing_risk_report, filename="2.pricing_risk_analysis.md")
 
-    # # ✅ Step 4: Generate AI-Powered Negotiation Charter
-    # print("\nStep 5: Generating AI-driven negotiation charter...")
-    # negotiation_charter_crew = RfpManagementCrew().negotiation_charter_crew()
-    # negotiation_charter = negotiation_charter_crew.kickoff(inputs={})
-    # save_markdown(negotiation_charter, filename="3.negotiation_charter.md")
+    # ✅ Step 4: Generate AI-Powered Negotiation Charter
+    print("\nStep 5: Generating AI-driven negotiation charter...")
+    negotiation_charter_crew = RfpManagementCrew().negotiation_charter_crew()
+    negotiation_charter = negotiation_charter_crew.kickoff(inputs={})
+    save_markdown(negotiation_charter, filename="3.negotiation_charter.md")
 
 
-    # # ✅ Step 5: Generate Negotiation email
-    # print("\nStep 6: Generating negotiation email...")
-    # negotiation_email_crew = RfpManagementCrew().negotiation_email_crew()
-    # negotiation_email = negotiation_email_crew.kickoff(inputs={})
-    # save_markdown(negotiation_email, filename="4.negotiation_email.md")
+    # ✅ Step 5: Generate Negotiation email
+    print("\nStep 6: Generating negotiation email...")
+    negotiation_email_crew = RfpManagementCrew().negotiation_email_crew()
+    negotiation_email = negotiation_email_crew.kickoff(inputs={})
+    save_markdown(negotiation_email, filename="4.negotiation_email.md")
 
-    # # ✅ Step 6: Generate Counter Offer email
-    # print("\nStep 7: Generating counter offer email...")
-    # counter_offer_email_crew = RfpManagementCrew().counteroffer_generation_crew()
-    # counter_offer_email = counter_offer_email_crew.kickoff(inputs={})
-    # save_markdown(counter_offer_email, filename="5.counter_offer_email.md")
+    # ✅ Step 6: Generate Counter Offer email
+    print("\nStep 7: Generating counter offer email...")
+    counter_offer_email_crew = RfpManagementCrew().counteroffer_generation_crew()
+    counter_offer_email = counter_offer_email_crew.kickoff(inputs={})
+    save_markdown(counter_offer_email, filename="5.counter_offer_email.md")
     
-    # # ✅ **Step 8: Generate AI-Powered Contract**
-    # print("\n🔹 Step 8: Generating AI-Powered Contract based on negotiation insights...")
-    # contract_generator_crew = RfpManagementCrew().contract_generator_crew()
-    # contract_document = contract_generator_crew.kickoff(inputs={})
-    # save_markdown(contract_document, filename="6.final_contract.md")
+    # ✅ **Step 8: Generate AI-Powered Contract**
+    print("\n🔹 Step 8: Generating AI-Powered Contract based on negotiation insights...")
+    contract_generator_crew = RfpManagementCrew().contract_generator_crew()
+    contract_document = contract_generator_crew.kickoff(inputs={})
+    save_markdown(contract_document, filename="6.final_contract.md")
 
-    # print("\n🔹 Step 9: Reviewing the final contract for legal compliance and deviations...")
-    # contract_reviewer_crew = RfpManagementCrew().contract_reviewer_crew()
-    # contract_review_output = contract_reviewer_crew.kickoff(inputs={})
-    # save_markdown(contract_review_output, filename="7.contract_review.md")
+    print("\n Step 9: Reviewing the final contract for legal compliance and deviations...")
+    contract_reviewer_crew = RfpManagementCrew().contract_reviewer_crew()
+    contract_review_output = contract_reviewer_crew.kickoff(inputs={})
+    save_markdown(contract_review_output, filename="7.contract_review.md")
 
     # ✅ Step 9: Reviewing the final contract for legal compliance
-    print("\n🔹 Step 9: Reviewing the final contract for legal compliance and deviations...")
+    print("\n Step 9: Reviewing the final contract for legal compliance and deviations...")
     contract_revision_crew = RfpManagementCrew().contract_revision_crew()
     revised_contract = contract_revision_crew.kickoff(inputs={})
     save_markdown(revised_contract, filename="8.revised_final_contract.md")
 
-    print("\n📌 Reports saved:")
+    print("\n Reports saved:")
     print("   - '0.retrieved_supplier_proposals.md'")
     print("   - '1.rfp_comparative_analysis.md'")
     print("   - '2.pricing_risk_analysis.md'")
